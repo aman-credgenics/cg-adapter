@@ -10,10 +10,9 @@ from app.models.base import Base
 
 class User(Base):
     __tablename__ = "users"
-    #__table_args__ = ({"schema": "happy_hog"},)
     user_id = Column(UUID(as_uuid=True), unique=True, default=uuid.uuid4, autoincrement=True)
     name = Column(String, nullable=False, primary_key=True, unique=True)
-    contact_number = Column(int, nullable=False)
+    contact_number = Column()
 
     @classmethod
     async def find(cls, db_session: AsyncSession, name: str):

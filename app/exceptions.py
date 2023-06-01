@@ -1,41 +1,15 @@
-from fastapi import HTTPException, status
 
 
-class BadRequestHTTPException(HTTPException):
-    def __init__(self, msg: str):
-        super().__init__(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail=msg if msg else "Bad request",
-        )
+class CustomError(Exception):
+    def __init__(self, message: str, code: str, data: dict = None):
+        super().__init__(message)
+        self.message = message
+        self.code = code
+        self.data = data
 
+    def __str__(self):
+        return f"Error occurred while processing request: {self.message} | {self.code}"
 
-class ForbiddenHTTPException(HTTPException):
-    def __init__(self, msg: str):
-        super().__init__(
-            status_code=status.HTTP_403_FORBIDDEN,
-            detail=msg if msg else "Requested resource is forbidden",
-        )
-
-
-class NotFoundHTTPException(HTTPException):
-    def __init__(self, msg: str):
-        super().__init__(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail=msg if msg else "Requested resource is not found",
-        )
-
-
-class ConflictHTTPException(HTTPException):
-    def __init__(self, msg: str):
-        super().__init__(
-            status_code=status.HTTP_409_CONFLICT,
-            detail=msg if msg else "Conflicting resource request",
-        )
-
-
-class ServiceNotAvailableHTTPException(HTTPException):
-    def __init__(self, msg: str):
-        super().__init__(
-            status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
-            detail=msg if msg else "Service not available",
-        )
+class ARIConnectionException(CustomError):
+    def __init__(self, message: str = "ARI Connection Error", code: str = "ARI424", data: dict = None):
+        super().__init__(message, code, data)

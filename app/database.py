@@ -15,8 +15,6 @@ engine = create_async_engine(
     echo=True,
 )
 
-# expire_on_commit=False will prevent attributes from being expired
-# after commit.
 AsyncSessionFactory = sessionmaker(engine, autoflush=False, expire_on_commit=False, class_=AsyncSession)
 
 
