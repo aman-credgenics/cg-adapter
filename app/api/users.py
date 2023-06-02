@@ -20,6 +20,7 @@ async def find_user(
     name: str,
     db_session: AsyncSession = Depends(get_db),
 ):
+    
     return await User.find(db_session, name)
 
 

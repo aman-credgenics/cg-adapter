@@ -23,16 +23,17 @@ def asterisk_is_loading(error):
     return False
 
 
+
 class ARIClient(metaclass=SingletonMeta):
     _apps = []
     _is_running = False
     client = None
 
     def __init__(self, config):
-        self.client = self.create_ari_client(config['connection'], config['startup_connection_tries'], config['startup_connection_delay'])
+        self.client = self._create_ari_client(config['connection'], config['startup_connection_tries'], config['startup_connection_delay'])
         self._apps = config['apps'].split(",")
 
-    def _new_ari_client(self, ari_config, startup_connection_tries, startup_connection_delay):
+    def _create_ari_client(self, ari_config, startup_connection_tries, startup_connection_delay):
         for _ in range(startup_connection_tries):
             try:
                 return ari.connect(**ari_config)
@@ -80,3 +81,4 @@ class ARIClient(metaclass=SingletonMeta):
 
         while self._is_running and not self.client.websockets:
             time.sleep(0.1)
+    
