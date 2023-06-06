@@ -22,8 +22,6 @@ def asterisk_is_loading(error):
     #any other server error
     return False
 
-
-
 class ARIClient(metaclass=SingletonMeta):
     _apps = []
     _is_running = False
@@ -34,6 +32,7 @@ class ARIClient(metaclass=SingletonMeta):
         self._apps = config['apps'].split(",")
 
     def _create_ari_client(self, ari_config, startup_connection_tries, startup_connection_delay):
+        print(ari_config)
         for _ in range(startup_connection_tries):
             try:
                 return ari.connect(**ari_config)
@@ -74,11 +73,12 @@ class ARIClient(metaclass=SingletonMeta):
             self.client.close()
         except RuntimeError:
             pass
-    
+
     def _sync(self):
         '''self.sync() should be called before calling self.stop(), in case the
         ari client does not have the websocket yet'''
 
         while self._is_running and not self.client.websockets:
             time.sleep(0.1)
+    
     
